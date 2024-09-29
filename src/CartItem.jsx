@@ -9,27 +9,77 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+ return items.reduce((total, item) => total + item.quantity * item.cost, 0);
   };
 
   const handleContinueShopping = (e) => {
-   
+   <div>
+      <h2>Plants List</h2>
+      {/* Example plant data */}
+      <div>
+        <h3>Plant 1</h3>
+        <button onClick={() => handleAddToCart({ id: 1, name: 'Plant 1', price: 10 })}>
+          Add to Cart
+        </button>
+      </div>
+      <div>
+        <h3>Plant 2</h3>
+        <button onClick={() => handleAddToCart({ id: 2, name: 'Plant 2', price: 15 })}>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  };
+   const handleCheckoutShopping = () => {
+    alert('Functionality to be added for future reference');
   };
 
-
-
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name, quantity: quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
+     if (quantity === 1) {
+      dispatch(removeItem({ name }));
+    } else {
+      dispatch(updateQuantity({ name, quantity: quantity - 1 }));
+    }
    
   };
 
-  const handleRemove = (item) => {
+   const handleRemove = (name) => {
+    dispatch(removeItem({ name }));
   };
 
+  const handleRemoveFromCart = (name) => {
+    dispatch(removeItem({ name })); // Dispatch removeItem with the plant's name
+  };
+
+  const handleUpdateQuantity = (name, quantity) => {
+    dispatch(updateQuantity({ name, quantity })); // Dispatch updateQuantity with name and new quantity
+  };
+
+  return (
+    <div>
+      <h3>{plant.name}</h3>
+      <img src={plant.image} alt={plant.name} />
+      <p>Price: ${plant.cost}</p>
+      <p>Quantity: {plant.quantity}</p>
+      
+      {/* Buttons for handling actions */}
+      <button onClick={() => handleUpdateQuantity(plant.name, plant.quantity + 1)}>
+        Increase Quantity
+      </button>
+      <button onClick={() => handleRemoveFromCart(plant.name)}>
+        Remove from Cart
+      </button>
+    </div>
+  );
+}
+
   // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
+  const calculateTotalCost = (quantity, cost) => {
+    return quantity * cost;
   };
 
   return (
@@ -61,7 +111,6 @@ const CartItem = ({ onContinueShopping }) => {
       </div>
     </div>
   );
-};
 
 export default CartItem;
 
